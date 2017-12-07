@@ -1,0 +1,11 @@
+body {
+    text-align: center;
+}
+.single-counter,
+button {
+    margin: 20px;
+    padding: 10px;
+}
+span {
+    display: block;
+}
