@@ -38,17 +38,38 @@ var Movie = React.createClass({
     render: function(){
         return (
             React.createElement('li', {key: this.props.movie.id}, 
-                React.createElement(MovieTitle),
-                React.createElement('p', {}, this.props.movie.desc),
-                React.createElement('img', {src: this.props.movie.img})
+                React.createElement(MovieTitle, {title: this.props.movie.title}),
+                React.createElement(MovieDescription, {desc: this.props.movie.desc}),
+                React.createElement(MoviePoster, {src: this.props.movie.img})
             )
         )
     }
 });
 
 var MovieTitle = React.createClass({
+    propTypes: {
+        title: React.PropTypes.string.isRequired,
+    },
     render: function(){
-        return React.createElement('h2', {}, this.props.movie.title)
+        return React.createElement('h2', {}, this.props.title)
+    }
+});
+
+var MovieDescription = React.createClass({
+    propTypes: {
+        desc: React.PropTypes.string.isRequired,
+    },
+    render: function(){
+        return React.createElement('p', {}, this.props.desc)
+    }
+});
+
+var MoviePoster = React.createClass({
+    propTypes: {
+        src: React.PropTypes.string.isRequired,
+    },
+    render: function(){
+        return React.createElement('img', {src: this.props.src})
     }
 });
 
