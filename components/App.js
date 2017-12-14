@@ -6,7 +6,8 @@ App = React.createClass({
         return {
             loading: false,
             searchingText: '',
-            gif: {}
+            gif: {},
+            error: ''
         };
     },
 
@@ -16,19 +17,19 @@ App = React.createClass({
         });
         var self = this;
         this.getGif(searchingText)
-        .then(function(gif) {
+        .then((gif) => {
             self.setState({
                 loading: false,
                 gif: gif,
-                searchingText: searchingText
+                searchingText: searchingText,
+                error: ''
               });
-            document.getElementById("errorMessage").innerText = "";
         })
-        .catch(function(error) {
+        .catch((error) => {
             self.setState({
-                loading: false
+                loading: false,
+                error: error.message
               });
-            document.getElementById("errorMessage").innerText = error.message;
         });
     },
 
@@ -39,17 +40,16 @@ App = React.createClass({
                 fetch(url, {
                     method: 'get'
                 })
-                .then(function(resp){
-                    return resp.json();
+                .then((resp) => {
+                    resp.json().then((respJson) => {
+                        var gif = {
+                            url: respJson.data.fixed_width_downsampled_url,
+                            sourceUrl: respJson.data.url
+                        };
+                        resolve(gif);
+                    });
                 })
-                .then(function(resp){
-                    var gif = {
-                        url: resp.data.fixed_width_downsampled_url,
-                        sourceUrl: resp.data.url
-                    };
-                    resolve(gif);
-                })
-                .catch(function(error){
+                .catch((error) => {
                     reject(new Error('server error - please try again later'));
                 });
             }
@@ -67,7 +67,7 @@ App = React.createClass({
           <div style={styles}>
                 <h1>Wyszukiwarka GIFów!</h1>
                 <p>Znajdź gifa na <a href='http://giphy.com'>giphy</a>.<br/><br/>Naciskaj enter, aby pobrać kolejne gify.</p>
-                <p id='errorMessage'></p>
+                <p id="errorMessage">{this.state.error}</p>
                 <Search onSearch={this.handleSearch}/>
             <Gif 
                 loading={this.state.loading}
