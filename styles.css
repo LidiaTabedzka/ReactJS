@@ -29,3 +29,6 @@ p {
 input {
     padding: 5px;
 }
+#errorMessage {
+    color: red;
+}
