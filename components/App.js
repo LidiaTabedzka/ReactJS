@@ -28,7 +28,7 @@ App = React.createClass({
             .catch((error) => {
                 self.setState({
                     loading: false,
-                    error: error.message
+                    error: 'server error - please try again later'
                 });
             });
     },
@@ -43,11 +43,7 @@ App = React.createClass({
                     sourceUrl: respJson.data.url
                 };
                 return gif;
-            })
-            .catch((error) => {
-                throw new Error('server error - please try again later');
-                return error;
-            });           
+            });          
     },
 
     render: function() {
